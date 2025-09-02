@@ -11,9 +11,11 @@ library.books.set([book1, book2])
 librarian = Librarian.objects.create(name="Ms. Reed", library=library)
 
 # 1. Query all books by a specific author
-books_by_orwell = Book.objects.filter(author__name="George Orwell")
-print("Books by George Orwell:")
-for book in books_by_orwell:
+author_name = "George Orwell"
+author = Author.objects.get(name=author_name)
+books_by_author = Book.objects.filter(author=author)
+print(f"Books by {author_name}:")
+for book in books_by_author:
     print(f"- {book.title}")
 
 # 2. List all books in a library
