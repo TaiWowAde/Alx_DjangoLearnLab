@@ -120,6 +120,3 @@ def delete_book(request, book_id):
         book.delete()
         return redirect("book_list")
     return render(request, "relationship_app/confirm_delete.html", {"book": book})
-
-
-
