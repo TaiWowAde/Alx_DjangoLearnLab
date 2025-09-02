@@ -10,15 +10,25 @@ from .forms import BookForm
 
 
 def list_books(request):
+    """Render a list of all books with their authors."""
     books = Book.objects.all()
-    book_list = ", ".join([f"{book.title} by {book.author}" for book in books])
-    return HttpResponse(book_list)
+    return render(
+        request,
+        "relationship_app/list_books.html",
+        {"books": books},
+    )
+
 
 
 class LibraryDetailView(DetailView):
     model = Library
     template_name = "relationship_app/library_detail.html"
     context_object_name = "library"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["books"] = self.object.books.all()
+        return context
 
 
 def register(request):
@@ -108,3 +118,6 @@ def delete_book(request, book_id):
         book.delete()
         return redirect("book_list")
     return render(request, "relationship_app/confirm_delete.html", {"book": book})
+
+
+
