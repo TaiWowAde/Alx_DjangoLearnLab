@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import user_passes_test, permission_required
@@ -9,13 +10,14 @@ from .forms import BookForm
 
 
 def list_books(request):
-    books = Book.objects.select_related("author").all()
-    return render(request, "relationship_app/list_books.html", {"books": books})
+    books = Book.objects.all()
+    book_list = ", ".join([f"{book.title} by {book.author}" for book in books])
+    return HttpResponse(book_list)
 
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = "relationship_app/library_detail.html"
+    template_name = "library_detail.html"
     context_object_name = "library"
 
 
